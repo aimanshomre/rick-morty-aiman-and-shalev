@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>JavaScript Promises Tutorial</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        line-height: 1.6;
+      }
+      .example {
+        margin: 20px 0;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+      }
+      .output {
+        background-color: #f5f5f5;
+        padding: 10px;
+        margin-top: 10px;
+        border-radius: 3px;
+      }
+      button {
+        padding: 8px 16px;
+        margin: 5px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>JavaScript Promises Tutorial</h1>
+
+    <div class="example">
+      <h2>1. Basic Promise Creation</h2>
+      <button onclick="runBasicPromise()">Run Basic Promise</button>
+      <div
+        id="basic-output"
+        class="output"
+      ></div>
+    </div>
+
+    <div class="example">
+      <h2>2. Promise Chaining</h2>
+      <button onclick="runPromiseChain()">Run Promise Chain</button>
+      <div
+        id="chain-output"
+        class="output"
+      ></div>
+    </div>
+
+    <div class="example">
+      <h2>3. Error Handling</h2>
+      <button onclick="runErrorHandling()">Run Error Example</button>
+      <div
+        id="error-output"
+        class="output"
+      ></div>
+    </div>
+
+    <div class="example">
+      <h2>4. Promise.all()</h2>
+      <button onclick="runPromiseAll()">Run Promise.all()</button>
+      <div
+        id="all-output"
+        class="output"
+      ></div>
+    </div>
+
+    <div class="example">
+      <h2>5. Promise.race()</h2>
+      <button onclick="runPromiseRace()">Run Promise.race()</button>
+      <div
+        id="race-output"
+        class="output"
+      ></div>
+    </div>
+
+    <div class="example">
+      <h2>6. Async/Await</h2>
+      <button onclick="runAsyncAwait()">Run Async/Await</button>
+      <div
+        id="async-output"
+        class="output"
+      ></div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="01-basic-promise.js"></script>
+    <script src="02-promise-chaining.js"></script>
+    <script src="03-error-handling.js"></script>
+    <script src="04-promise-all.js"></script>
+    <script src="05-promise-race.js"></script>
+  </body>
+</html>
