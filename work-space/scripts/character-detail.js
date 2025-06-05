@@ -82,12 +82,14 @@ document.addEventListener("DOMContentLoaded", initContainerDetails);
 
 function initContainerDetails() {
   const characterId = getUrlSearchParamByKey("id");
-  const pagenum = getUrlSearchParamByKey("pgnum");
-  const character = loadCharacterDetails(characterId, pagenum);
+  const character = loadCharacterDetails(characterId);
+  console.log(character);
 
   if (!character) {
     // redirct to home-page
-    window.location.href = "index.html";
+    console.log("hi");
+
+    window.location.href = "characters.html";
     return;
   }
 }
@@ -95,7 +97,7 @@ function initContainerDetails() {
  * Loads and displays details for a specific character
  * @param {string} id - The character ID to load
  */
-function loadCharacterDetails(id, page) {
+function loadCharacterDetails(id) {
   return fetchCharacterbyId(id).then((char) => {
     updateUI(char, char.episode);
   });
@@ -116,8 +118,8 @@ function loadCharacterDetails(id, page) {
  * @param {Array} episodes - Array of episode data
  */
 function updateUI(character, episodes) {
-  // console.log(character);
-  // console.log(episodes);
+  console.log(character);
+  console.log(episodes);
 
   const grid = document.getElementById("characters-grid");
   if (!grid) return;
@@ -147,16 +149,36 @@ function updateUI(character, episodes) {
 
   const species = document.createElement("p");
   species.textContent = `Species: ${character.species}`;
+  let origin;
+  if (!character.origin.url) {
+    origin = document.createElement("p");
+    origin.textContent = `Origin: ${character.origin.name}`;
+  } else {
+    origin = document.createElement("a");
+    origin.textContent = `Origin: ${character.origin.name}`;
+    const originLinkId = character.origin.url.split("/").pop();
+    origin.href = `location-detail.html?id=${originLinkId}`;
+  }
 
-  const origin = document.createElement("a");
-  origin.textContent = `Origin: ${character.origin.name}`;
-  const originLinkId = character.origin.url.split("/").pop();
-  origin.href = `location-detail.html?id=${originLinkId}`;
-
-  const location = document.createElement("a");
-  location.textContent = `Location: ${character.location.name}`;
-  const locationLinkId = character.location.url.split("/").pop();
-  location.href = `location-detail.html?id=${locationLinkId}`;
+  let location;
+  if (!character.location.url) {
+    location = document.createElement("p");
+    location.textContent = `Location: ${character.location.name}`;
+  } else {
+    location = document.createElement("a");
+    location.textContent = `Location: ${character.location.name}`;
+    const locationLinkId = character.location.url.split("/").pop();
+    location.href = `location-detail.html?id=${locationLinkId}`;
+  }
+  const episodCard = document.createElement("div");
+  episodCard.className = "character-card";
+  episodes.forEach((ep) => {
+    const epEl = document.createElement("a");
+    const epNum = ep.split("/").pop();
+    epEl.textContent = `episode: ${epNum}`;
+    epEl.href = `episode-detail.html?id=${epNum}`;
+    episodCard.appendChild(epEl);
+  });
 
   card.appendChild(img);
   card.appendChild(name);
@@ -167,6 +189,7 @@ function updateUI(character, episodes) {
 
   // card.appendChild(link);
   grid.appendChild(card);
+  grid.appendChild(episodCard);
 }
 
 // TODO: Implement the UI update

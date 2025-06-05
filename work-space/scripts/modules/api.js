@@ -24,6 +24,7 @@ export function fetchCharacterbyId(charId) {
   return fetch(`${baseUrl}character/${charId}`)
     .then((response) => {
       if (!response.ok) {
+        window.location.href = "characters.html";
         throw new Error("Response not OK");
       }
 
@@ -40,6 +41,7 @@ export function getEpisodesByPage(pageNum) {
   return fetch(`${episodeUrl}?page=${pageNum}`)
     .then((response) => {
       if (!response.ok) {
+        window.location.href = "characters.html";
         throw new Error("Response not OK");
       }
       return response.json();
