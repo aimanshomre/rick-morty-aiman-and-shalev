@@ -40,3 +40,19 @@ export function getEpisodesByPage(pageNum) {
       console.warn("fet episodes error:", error);
     });
 }
+export function getLocationsByPage(pageNum) {
+  return fetch(`${locationUrl}?page=${pageNum}`)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Response not OK");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      console.log(data.results);
+      return data.results;
+    })
+    .catch((error) => {
+      console.warn("fet episodes error:", error);
+    });
+}
