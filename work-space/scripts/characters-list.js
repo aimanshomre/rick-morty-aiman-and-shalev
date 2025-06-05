@@ -27,10 +27,6 @@ function updateUI(data) {
 
   // 2. Clear existing content
   grid.textContent = "";
-  let pagenum = 0;
-  if (getUrlSearchParamByKey("page")) pagenum = getUrlSearchParamByKey("page");
-  else pagenum = 1;
-  console.log(pagenum);
 
   // 3. For each character in data.results:
   data.results.forEach((character) => {
@@ -40,7 +36,7 @@ function updateUI(data) {
 
     // - Add character image, name, status, species, location (textContent)
     const link = document.createElement("a");
-    link.href = `character-detail.html?id=${character.id}&pgnum=${pagenum}`;
+    link.href = `character-detail.html?id=${character.id}`;
 
     const img = document.createElement("img");
     img.src = character.image;
