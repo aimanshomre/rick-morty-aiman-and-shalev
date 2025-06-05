@@ -1,7 +1,13 @@
+import { fetchCharactersinPage } from "./modules/api.js";
+
 /**
  * Characters Page Script
  * Handles the display and interaction of the characters list page
  */
+const carectersUrl = `https://rickandmortyapi.com/api/character`;
+const array1 = fetchCharactersinPage(carectersUrl, 1);
+console.log(array1);
+
 const Array = [
   {
     id: 1,
