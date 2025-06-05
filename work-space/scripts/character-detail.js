@@ -1,4 +1,4 @@
-import { fetchCharactersinPage } from "./modules/api.js";
+import { fetchCharacterbyId, fetchCharactersinPage } from "./modules/api.js";
 import { getUrlSearchParamByKey } from "./modules/utils.js";
 
 /**
@@ -84,7 +84,6 @@ function initBookDetails() {
   const characterId = getUrlSearchParamByKey("id");
   const pagenum = getUrlSearchParamByKey("pgnum");
   const character = loadCharacterDetails(characterId, pagenum);
-  console.log(character);
 
   if (!character) {
     // redirct to home-page
@@ -97,11 +96,10 @@ function initBookDetails() {
  * @param {string} id - The character ID to load
  */
 function loadCharacterDetails(id, page) {
-  return fetchCharactersinPage(page).then((data) => {
-    data.results.forEach((char) => {
-      if (Number(char.id) === Number(id)) return updateUI(char, char.episode);
-    });
+  return fetchCharacterbyId(id).then((char) => {
+    updateUI(char, char.episode);
   });
+
   // TODO: Implement character detail loading
   // 1. Show loading state
   // 2. Fetch character data using the API module
@@ -110,9 +108,7 @@ function loadCharacterDetails(id, page) {
   // 5. Update UI with character and episode data
   // 6. Handle any errors
   // 7. Hide loading state
-  throw new Error("loadCharacterDetails not implemented");
 }
-console.log("hi");
 
 /**
  * Updates the UI with character and episode data
@@ -120,8 +116,8 @@ console.log("hi");
  * @param {Array} episodes - Array of episode data
  */
 function updateUI(character, episodes) {
-  console.log(character);
-  console.log(episodes);
+  // console.log(character);
+  // console.log(episodes);
 
   const grid = document.getElementById("characters-grid");
   if (!grid) return;
@@ -136,8 +132,8 @@ function updateUI(character, episodes) {
   card.className = "character-card";
 
   // - Add character image, name, status, species, location (textContent)
-  const link = document.createElement("a");
-  link.href = `character-detail.html?id=${character.id}`;
+  // const link = document.createElement("a");
+  // link.href = `character-detail.html?id=${character.id}`;
 
   const img = document.createElement("img");
   img.src = character.image;
@@ -152,16 +148,24 @@ function updateUI(character, episodes) {
   const species = document.createElement("p");
   species.textContent = `Species: ${character.species}`;
 
-  const location = document.createElement("p");
+  const origin = document.createElement("a");
+  origin.textContent = `Origin: ${character.origin.name}`;
+  const originLinkId = character.origin.url.split("/").pop();
+  origin.href = `location-detail.html?id=${originLinkId}`;
+
+  const location = document.createElement("a");
   location.textContent = `Location: ${character.location.name}`;
+  const locationLinkId = character.location.url.split("/").pop();
+  location.href = `location-detail.html?id=${locationLinkId}`;
 
-  link.appendChild(img);
-  link.appendChild(name);
-  link.appendChild(status);
-  link.appendChild(species);
-  link.appendChild(location);
+  card.appendChild(img);
+  card.appendChild(name);
+  card.appendChild(status);
+  card.appendChild(species);
+  card.appendChild(origin);
+  card.appendChild(location);
 
-  card.appendChild(link);
+  // card.appendChild(link);
   grid.appendChild(card);
 }
 

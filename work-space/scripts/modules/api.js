@@ -20,6 +20,22 @@ export function fetchCharactersinPage(pageNum) {
       console.warn("Fetch error:", error);
     });
 }
+export function fetchCharacterbyId(charId) {
+  return fetch(`${baseUrl}character/${charId}`)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Response not OK");
+      }
+
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((error) => {
+      console.warn("Fetch error:", error);
+    });
+}
 export function getEpisodesByPage(pageNum) {
   return fetch(`${episodeUrl}?page=${pageNum}`)
     .then((response) => {
