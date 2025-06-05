@@ -1,3 +1,5 @@
+import { api } from "./api.js";
+
 /**
  * Episodes Page Script
  * Handles the display and interaction of the episodes list page
