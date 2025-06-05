@@ -110,6 +110,7 @@ function loadCharacterDetails(id, page) {
   // 7. Hide loading state
   throw new Error("loadCharacterDetails not implemented");
 }
+console.log("hi");
 
 /**
  * Updates the UI with character and episode data
