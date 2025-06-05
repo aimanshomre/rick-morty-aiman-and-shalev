@@ -45,7 +45,7 @@ function updateUI(episode, characters) {
 
   // Characters grid
   const grid = document.createElement("div");
-  grid.className = "books"; // reuse grid style
+  grid.className = "containers"; // reuse grid style
   if (!characters.length) {
     grid.innerHTML = "<p>No characters in this episode.</p>";
   } else {

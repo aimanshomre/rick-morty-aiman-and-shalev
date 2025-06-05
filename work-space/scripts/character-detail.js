@@ -78,9 +78,9 @@ const spesificChar = {
   created: "2017-11-04T18:48:46.250Z",
 };
 
-document.addEventListener("DOMContentLoaded", initBookDetails);
+document.addEventListener("DOMContentLoaded", initContainerDetails);
 
-function initBookDetails() {
+function initContainerDetails() {
   const characterId = getUrlSearchParamByKey("id");
   const pagenum = getUrlSearchParamByKey("pgnum");
   const character = loadCharacterDetails(characterId, pagenum);
