@@ -1,4 +1,5 @@
 import { fetchCharactersinPage } from "./modules/api.js";
+import { getUrlSearchParamByKey } from "./modules/utils.js";
 
 /**
  * Characters Page Script
@@ -26,16 +27,20 @@ function updateUI(data) {
 
   // 2. Clear existing content
   grid.textContent = "";
+  let pagenum = 0;
+  if (getUrlSearchParamByKey("page")) pagenum = getUrlSearchParamByKey("page");
+  else pagenum = 1;
+  console.log(pagenum);
 
   // 3. For each character in data.results:
-  data.forEach((character) => {
+  data.results.forEach((character) => {
     // - Create a card element
     const card = document.createElement("div");
     card.className = "character-card";
 
     // - Add character image, name, status, species, location (textContent)
     const link = document.createElement("a");
-    link.href = `character-detail.html?id=${character.id}`;
+    link.href = `character-detail.html?id=${character.id}&pgnum=${pagenum}`;
 
     const img = document.createElement("img");
     img.src = character.image;

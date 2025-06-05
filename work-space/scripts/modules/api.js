@@ -14,7 +14,7 @@ export function fetchCharactersinPage(pageNum) {
       return response.json();
     })
     .then((data) => {
-      return data.results;
+      return data;
     })
     .catch((error) => {
       console.warn("Fetch error:", error);

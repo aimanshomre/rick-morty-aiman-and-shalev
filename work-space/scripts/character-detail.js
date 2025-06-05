@@ -84,6 +84,8 @@ function initBookDetails() {
   const characterId = getUrlSearchParamByKey("id");
   const pagenum = getUrlSearchParamByKey("pgnum");
   const character = loadCharacterDetails(characterId, pagenum);
+  console.log(character);
+
   if (!character) {
     // redirct to home-page
     window.location.href = "index.html";
@@ -96,7 +98,7 @@ function initBookDetails() {
  */
 function loadCharacterDetails(id, page) {
   return fetchCharactersinPage(page).then((data) => {
-    data.forEach((char) => {
+    data.results.forEach((char) => {
       if (Number(char.id) === Number(id)) return updateUI(char, char.episode);
     });
   });
@@ -121,14 +123,55 @@ function updateUI(character, episodes) {
   console.log(character);
   console.log(episodes);
 
-  // TODO: Implement the UI update
-  // 1. Get the detail container element
-  // 2. Create character header with image and basic info
-  // 3. Add links to origin and current location
-  // 4. Create episodes section with all episodes the character appears in
-  // 5. Handle empty states and errors
-  // throw new Error("updateUI not implemented");
+  const grid = document.getElementById("characters-grid");
+  if (!grid) return;
+
+  // 2. Clear existing content
+  grid.textContent = "";
+
+  // 3. For each character in data.results:
+
+  // - Create a card element
+  const card = document.createElement("div");
+  card.className = "character-card";
+
+  // - Add character image, name, status, species, location (textContent)
+  const link = document.createElement("a");
+  link.href = `character-detail.html?id=${character.id}`;
+
+  const img = document.createElement("img");
+  img.src = character.image;
+  img.alt = character.name;
+
+  const name = document.createElement("h3");
+  name.textContent = character.name;
+
+  const status = document.createElement("p");
+  status.textContent = `Status: ${character.status}`;
+
+  const species = document.createElement("p");
+  species.textContent = `Species: ${character.species}`;
+
+  const location = document.createElement("p");
+  location.textContent = `Location: ${character.location.name}`;
+
+  link.appendChild(img);
+  link.appendChild(name);
+  link.appendChild(status);
+  link.appendChild(species);
+  link.appendChild(location);
+
+  card.appendChild(link);
+  grid.appendChild(card);
 }
+
+// TODO: Implement the UI update
+// 1. Get the detail container element
+// 2. Create character header with image and basic info
+// 3. Add links to origin and current location
+// 4. Create episodes section with all episodes the character appears in
+// 5. Handle empty states and errors
+// throw new Error("updateUI not implemented");
 
 // TODO: Initialize the page
 // 1. Get character ID from URL parameters
