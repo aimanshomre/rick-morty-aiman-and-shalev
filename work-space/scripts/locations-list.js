@@ -5,8 +5,6 @@ import { getLocationsByPage } from "./modules/api.js";
  * Handles the display and interaction of the locations list page
  */
 
-const locationUrl = `https://rickandmortyapi.com/api/location`;
-
 // State management for the locations page
 const state = {
   page: 1,
@@ -77,17 +75,12 @@ function loadLocations() {
   const grid = document.getElementById("locations-grid");
   if (grid) grid.innerHTML = "<p>Loading...</p>";
 
-  fetch(
-    `${locationUrl}?page=${state.page}${
-      state.search ? `&name=${encodeURIComponent(state.search)}` : ""
-    }`
-  )
-    .then((response) => {
-      if (!response.ok) throw new Error("Response not OK");
-      return response.json();
-    })
-    .then((data) => {
-      // נשתמש ב-data.results וב-data.info
+  getLocationsByPage(state.page, state.search)
+    .then((results) => {
+      const data = {
+        results: results || [],
+        info: {},
+      };
       state.data = data;
       updateUI(data);
     })
