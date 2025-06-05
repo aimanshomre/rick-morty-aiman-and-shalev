@@ -24,9 +24,19 @@ export function fetchCharactersinPage(url, pageNum) {
       console.warn("Fetch error:", error);
     });
 }
-
-console.log(
-  fetchCharactersinPage(carectersUrl, 41).then((data) => {
-    console.log(data);
-  })
-);
+export function getEpisodesByPage(pageNum) {
+  return fetch(`${episodeUrl}?page=${pageNum}`)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Response not OK");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      console.log(data.results);
+      return data.results;
+    })
+    .catch((error) => {
+      console.warn("fet episodes error:", error);
+    });
+}
