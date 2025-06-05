@@ -5,8 +5,7 @@ const locationUrl = `https://rickandmortyapi.com/api/location`;
 const episodeUrl = `https://rickandmortyapi.com/api/episode`;
 
 export function fetchCharactersinPage(url, pageNum) {
-  let fechedArr = [];
-  fetch(`${url}?page=${pageNum}`)
+  return fetch(`${url}?page=${pageNum}`)
     .then((response) => {
       console.log("Response:", response);
 
@@ -19,14 +18,15 @@ export function fetchCharactersinPage(url, pageNum) {
     .then((data) => {
       console.log("Fetched posts:", data.results);
       console.log("Fetched posts:", data.info.pages);
-      console.log("cars ,", fechedArr);
-      fechedArr = data.results;
+      return data.results;
     })
     .catch((error) => {
       console.warn("Fetch error:", error);
     });
-  console.log("feched array", fechedArr);
-  return fechedArr;
 }
 
-console.log(fetchCharactersinPage(carectersUrl, 41));
+console.log(
+  fetchCharactersinPage(carectersUrl, 41).then((data) => {
+    console.log(data);
+  })
+);
