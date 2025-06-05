@@ -4,8 +4,8 @@ const carectersUrl = `https://rickandmortyapi.com/api/character`;
 const locationUrl = `https://rickandmortyapi.com/api/location`;
 const episodeUrl = `https://rickandmortyapi.com/api/episode`;
 
-export function fetchCharactersinPage(url, pageNum) {
-  return fetch(`${url}?page=${pageNum}`)
+export function fetchCharactersinPage(pageNum) {
+  return fetch(`${carectersUrl}?page=${pageNum}`)
     .then((response) => {
       console.log("Response:", response);
 
