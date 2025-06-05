@@ -3,41 +3,79 @@
  * Handles the display of detailed information for a single location
  */
 
-/**
- * Loads and displays details for a specific location
- * @param {string} id - The location ID to load
- */
-function loadLocationDetails(id) {
-  // TODO: Implement location detail loading
-  // 1. Show loading state
-  // 2. Fetch location data using the API module
-  // 3. Extract resident IDs from location.residents URLs
-  // 4. Fetch all residents of this location
-  // 5. Update UI with location and resident data
-  // 6. Handle any errors
-  // 7. Hide loading state
-  throw new Error("loadLocationDetails not implemented");
+async function fetchLocationById(id) {
+  const url = `https://rickandmortyapi.com/api/location/${id}`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error("Location not found");
+  return res.json();
 }
 
-/**
- * Updates the UI with location and resident data
- * @param {Object} location - The location data
- * @param {Array} residents - Array of resident data
- */
+async function fetchResidentsByIds(ids) {
+  if (!ids.length) return [];
+  const url = `https://rickandmortyapi.com/api/character/${ids.join(",")}`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error("Residents not found");
+  const data = await res.json();
+  return Array.isArray(data) ? data : [data];
+}
+
+async function loadLocationDetails(id) {
+  const container = document.getElementById("containerList");
+  container.innerHTML = "<p>Loading...</p>";
+  try {
+    const location = await fetchLocationById(id);
+    const residentIds = location.residents.map((url) => url.split("/").pop());
+    const residents = await fetchResidentsByIds(residentIds);
+    updateUI(location, residents);
+  } catch (err) {
+    container.innerHTML = `<p>Error loading location: ${err.message}</p>`;
+  }
+}
+
 function updateUI(location, residents) {
-  // TODO: Implement the UI update
-  // 1. Get the detail container element
-  // 2. Create location header with basic info
-  // 3. Create residents section
-  // 4. For each resident:
-  //    - Create a card with image and basic info
-  //    - Make the card link to the character detail page
-  // 5. Handle empty states (no residents)
-  throw new Error("updateUI not implemented");
+  const container = document.getElementById("containerList");
+  container.innerHTML = "";
+
+  // Location header
+  const header = document.createElement("div");
+  header.innerHTML = `
+    <h2>${location.name}</h2>
+    <p><strong>Type:</strong> ${location.type}</p>
+    <p><strong>Dimension:</strong> ${location.dimension}</p>
+  `;
+  container.appendChild(header);
+
+  // Residents grid
+  const grid = document.createElement("div");
+  grid.className = "books";
+  if (!residents.length) {
+    grid.innerHTML = "<p>No residents in this location.</p>";
+  } else {
+    residents.forEach((resident) => {
+      const card = document.createElement("div");
+      card.className = "book";
+      card.innerHTML = `
+        <a href="character-detail.html?id=${resident.id}">
+          <img src="${resident.image}" alt="${resident.name}" style="width:100px;border-radius:1rem;">
+          <h4>${resident.name}</h4>
+          <p>Species: ${resident.species}</p>
+          <p>Status: ${resident.status}</p>
+        </a>
+      `;
+      grid.appendChild(card);
+    });
+  }
+  container.appendChild(grid);
 }
 
-// TODO: Initialize the page
-// 1. Get location ID from URL parameters
-// 2. Validate the ID
-// 3. Load location details if ID is valid
-// 4. Show error if ID is invalid or missing
+// --- Initialize page ---
+document.addEventListener("DOMContentLoaded", () => {
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
+  if (!id || isNaN(Number(id))) {
+    document.getElementById("containerList").innerHTML =
+      "<p>Invalid location ID.</p>";
+    return;
+  }
+  loadLocationDetails(id);
+});
