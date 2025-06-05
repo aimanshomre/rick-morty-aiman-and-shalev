@@ -55,5 +55,13 @@
         <p>© All rights reserved to Aiman and Shalev. Policy</p>
       </footer>
     </article>
+    <script>
+      const hamMenu = document.querySelector(".ham-menu");
+      const sideMenu = document.querySelector(".sliding-menu");
+      hamMenu.addEventListener("click", () => {
+        hamMenu.classList.toggle("active");
+        sideMenu.classList.toggle("active");
+      });
+    </script>
   </body>
 </html>

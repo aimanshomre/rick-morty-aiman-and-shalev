@@ -16,3 +16,7 @@ export function debounce(func, wait) {
   // 4. Set a new timeout to call the function after the wait period
   throw new Error("debounce not implemented");
 }
+export function getUrlSearchParamByKey(key) {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get(key);
+}

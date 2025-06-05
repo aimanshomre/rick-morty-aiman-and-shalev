@@ -7,8 +7,6 @@ const episodeUrl = `https://rickandmortyapi.com/api/episode`;
 export function fetchCharactersinPage(pageNum) {
   return fetch(`${carectersUrl}?page=${pageNum}`)
     .then((response) => {
-      console.log("Response:", response);
-
       if (!response.ok) {
         throw new Error("Response not OK");
       }
@@ -16,8 +14,6 @@ export function fetchCharactersinPage(pageNum) {
       return response.json();
     })
     .then((data) => {
-      console.log("Fetched posts:", data.results);
-      console.log("Fetched posts:", data.info.pages);
       return data.results;
     })
     .catch((error) => {
