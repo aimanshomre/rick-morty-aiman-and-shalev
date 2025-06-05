@@ -51,15 +51,16 @@ function updateUI(episode, characters) {
   } else {
     characters.forEach((char) => {
       const card = document.createElement("div");
-      card.className = "book";
+      card.className = "character-card";
+      const pgnumForChar = localStorage.getItem(`pgnum_${char.id}`) || 1;
       card.innerHTML = `
-        <a href="character-detail.html?id=${char.id}">
-          <img src="${char.image}" alt="${char.name}" style="width:100px;border-radius:1rem;">
-          <h4>${char.name}</h4>
-          <p>Species: ${char.species}</p>
-          <p>Status: ${char.status}</p>
-        </a>
-      `;
+    <a href="character-detail.html?id=${char.id}&pgnum=${pgnumForChar}">
+      <img src="${char.image}" alt="${char.name}" style="width:100px;border-radius:1rem;">
+      <h4>${char.name}</h4>
+      <p>Species: ${char.species}</p>
+      <p>Status: ${char.status}</p>
+    </a>
+  `;
       grid.appendChild(card);
     });
   }

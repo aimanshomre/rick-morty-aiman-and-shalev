@@ -108,3 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
     updateUI(charArray);
   });
 });
+
+link.addEventListener("click", () => {
+  localStorage.setItem(`pgnum_${character.id}`, currentPgnum);
+});

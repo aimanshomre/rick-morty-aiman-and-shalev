@@ -19,20 +19,32 @@ async function fetchResidentsByIds(ids) {
   return Array.isArray(data) ? data : [data];
 }
 
-async function loadLocationDetails(id) {
+document.addEventListener("DOMContentLoaded", () => {
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
+  const pgnum = params.get("pgnum");
+  if (!id || isNaN(Number(id))) {
+    document.getElementById("containerList").innerHTML =
+      "<p>Invalid location ID.</p>";
+    return;
+  }
+  loadLocationDetails(id, pgnum);
+});
+
+async function loadLocationDetails(id, pgnum) {
   const container = document.getElementById("containerList");
   container.innerHTML = "<p>Loading...</p>";
   try {
     const location = await fetchLocationById(id);
     const residentIds = location.residents.map((url) => url.split("/").pop());
     const residents = await fetchResidentsByIds(residentIds);
-    updateUI(location, residents);
+    updateUI(location, residents, pgnum);
   } catch (err) {
     container.innerHTML = `<p>Error loading location: ${err.message}</p>`;
   }
 }
 
-function updateUI(location, residents) {
+function updateUI(location, residents, pgnum) {
   const container = document.getElementById("containerList");
   container.innerHTML = "";
 
@@ -47,35 +59,25 @@ function updateUI(location, residents) {
 
   // Residents grid
   const grid = document.createElement("div");
-  grid.className = "books";
+  grid.className = "containers";
   if (!residents.length) {
     grid.innerHTML = "<p>No residents in this location.</p>";
   } else {
+    console.log(residents);
     residents.forEach((resident) => {
       const card = document.createElement("div");
-      card.className = "book";
+      card.className = "character-card";
+      const pgnumForChar = localStorage.getItem(`pgnum_${resident.id}`) || 1;
       card.innerHTML = `
-        <a href="character-detail.html?id=${resident.id}">
-          <img src="${resident.image}" alt="${resident.name}" style="width:100px;border-radius:1rem;">
-          <h4>${resident.name}</h4>
-          <p>Species: ${resident.species}</p>
-          <p>Status: ${resident.status}</p>
-        </a>
-      `;
+    <a href="character-detail.html?id=${resident.id}&pgnum=${pgnumForChar}">
+      <img src="${resident.image}" alt="${resident.name}" style="width:100px;border-radius:1rem;">
+      <h4>${resident.name}</h4>
+      <p>Species: ${resident.species}</p>
+      <p>Status: ${resident.status}</p>
+    </a>
+  `;
       grid.appendChild(card);
     });
   }
   container.appendChild(grid);
 }
-
-// --- Initialize page ---
-document.addEventListener("DOMContentLoaded", () => {
-  const params = new URLSearchParams(window.location.search);
-  const id = params.get("id");
-  if (!id || isNaN(Number(id))) {
-    document.getElementById("containerList").innerHTML =
-      "<p>Invalid location ID.</p>";
-    return;
-  }
-  loadLocationDetails(id);
-});
