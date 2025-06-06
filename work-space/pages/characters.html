@@ -24,6 +24,20 @@
         <img src="../rick-morty-logo.png" alt="" />
         <span>Rick&Morty-A+S</span>
         <nav>
+          <div class="search-div">
+            <span popovertarget="seachInput" class="search-container">
+              <button class="search-btn" popovertarget="seachInput">
+                <img src="../pics/shearch icon.png" alt="search icon" />
+              </button>
+            </span>
+          </div>
+          <input
+            popover
+            autocomplete="off"
+            id="seachInput"
+            type="text"
+            placeholder="search here..."
+          />
           <div class="ham-menu">
             <span></span>
             <span></span>
@@ -43,7 +57,11 @@
           <h1>Characters</h1>
         </div>
         <div id="characters-grid" class="containers"></div>
-        <div id="page-number"></div>
+        <div id="pageScroll" class="page-scroll">
+          <button id="previusPage">previus</button>
+          <div id="page-number"></div>
+          <button id="nextPage">Next</button>
+        </div>
       </div>
       <footer>
         <div class="footer">

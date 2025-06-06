@@ -6,6 +6,10 @@ import { getUrlSearchParamByKey } from "./modules/utils.js";
  * Handles the display and interaction of the characters list page
  */
 const carectersUrl = `https://rickandmortyapi.com/api/character`;
+let currentPage = getUrlSearchParamByKey("page") || 1;
+const prevBtn = document.getElementById("previusPage");
+const nextBtn = document.getElementById("nextPage");
+const searchInpEl = document.getElementById("seachInput");
 
 // State management for the characters page
 const state = {
@@ -24,6 +28,15 @@ function updateUI(data) {
   // 1. Get the grid element
   const grid = document.getElementById("characters-grid");
   if (!grid) return;
+
+  if (!data.results.length) {
+    const notFound = document.createElement("h2");
+    grid.textContent = "";
+    notFound.textContent = `no charecters with this name was found`;
+    grid.appendChild(notFound);
+
+    return;
+  }
 
   // 2. Clear existing content
   grid.textContent = "";
@@ -62,14 +75,40 @@ function updateUI(data) {
 
     card.appendChild(link);
     grid.appendChild(card);
+    const parent = document.getElementById("pageScroll");
+    if (currentPage >= 42 && parent.contains(nextBtn)) {
+      parent.removeChild(nextBtn);
+    }
+    if (currentPage <= 1 && parent.contains(prevBtn)) {
+      parent.removeChild(prevBtn);
+    }
   });
+}
 
-  // 4. Update pagination UI
+// 4. Update pagination UI
+function updatePagination(data) {
   const pageNumber = document.getElementById("page-number");
   if (pageNumber && data.info) {
-    pageNumber.textContent = `Page ${state.page} of ${data.info.pages}`;
+    console.log(data);
+
+    pageNumber.textContent = `Page ${currentPage} of ${data.info.pages}`;
   }
 }
+
+nextBtn.addEventListener("click", () => {
+  currentPage++;
+  window.location.href = `characters.html?page=${currentPage}`;
+  fetchCharactersinPage(currentPage).then((charArray) => {
+    updateUI(charArray);
+  });
+});
+prevBtn.addEventListener("click", () => {
+  currentPage--;
+  window.location.href = `characters.html?page=${currentPage}`;
+  fetchCharactersinPage(currentPage).then((charArray) => {
+    updateUI(charArray);
+  });
+});
 
 /** *
  *
@@ -100,15 +139,32 @@ function updateUI(data) {
 // 4. Call loadCharacters() on page load
 
 document.addEventListener("DOMContentLoaded", () => {
-  // const data = {
-  //   results: Array,
-  //   info: { page: state.page, pages: 1 },
-  // };
-  fetchCharactersinPage(carectersUrl, 41).then((charArray) => {
+  if (currentPage < 1 || currentPage > 42) {
+    currentPage = 1;
+    window.location.href = `characters.html?page=${currentPage}`;
+  }
+
+  fetchCharactersinPage(currentPage).then((charArray) => {
+    updatePagination(charArray);
+
     updateUI(charArray);
+  });
+  searchInpEl.addEventListener("input", () => {
+    const inputVal = searchInpEl.value.toLowerCase();
+    fetchCharactersinPage(currentPage)
+      .then((chars) => {
+        return chars.results.filter((char) => {
+          return char.name.toLowerCase().includes(inputVal);
+        });
+      })
+      .then((res) => {
+        if (!res) {
+        }
+        updateUI({ results: res });
+      });
   });
 });
 
-link.addEventListener("click", () => {
-  localStorage.setItem(`pgnum_${character.id}`, currentPgnum);
-});
+// link.addEventListener("click", () => {
+//   localStorage.setItem(`pgnum_${character.id}`, currentPgnum);
+// });
