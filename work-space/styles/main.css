@@ -356,7 +356,8 @@ footer {
   anchor-name: --search-anc;
   /* background: red; */
 }
-#seachInput {
+#seachInput,
+.search-inp {
   position-anchor: --nav-anc;
   /* background-color: red; */
   inset: auto;
@@ -461,7 +462,8 @@ footer {
   .containers {
     gap: 2rem;
   }
-  #seachInput {
+  #seachInput,
+  .search-inp {
     font-size: 1rem;
   }
 }
@@ -520,7 +522,8 @@ footer {
   .containers {
     gap: 2.5rem;
   }
-  #seachInput {
+  #seachInput,
+  .search-inp {
     font-size: 2rem;
   }
 }

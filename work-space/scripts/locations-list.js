@@ -19,6 +19,8 @@ const state = {
  * @param {Object} data.info - Pagination information
  */
 function updateUI(data) {
+  console.log(data);
+
   const grid = document.getElementById("locations-grid");
   if (!grid) return;
 
@@ -74,9 +76,14 @@ function updateUI(data) {
 function loadLocations() {
   const grid = document.getElementById("locations-grid");
   if (grid) grid.innerHTML = "<p>Loading...</p>";
+  getLocationsByPage(3).then((results) => {
+    console.log(results);
+  });
 
   getLocationsByPage(state.page, state.search)
     .then((results) => {
+      console.log(results);
+
       const data = {
         results: results || [],
         info: {},

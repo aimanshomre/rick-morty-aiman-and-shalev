@@ -1,11 +1,10 @@
 import { fetchCharactersinPage } from "./modules/api.js";
-import { getUrlSearchParamByKey } from "./modules/utils.js";
+import { debounce, getUrlSearchParamByKey } from "./modules/utils.js";
 
 /**
  * Characters Page Script
  * Handles the display and interaction of the characters list page
  */
-const carectersUrl = `https://rickandmortyapi.com/api/character`;
 let currentPage = getUrlSearchParamByKey("page") || 1;
 const prevBtn = document.getElementById("previusPage");
 const nextBtn = document.getElementById("nextPage");
@@ -86,7 +85,7 @@ function updateUI(data) {
 }
 
 // 4. Update pagination UI
-function updatePagination(data) {
+export function updatePagination(data) {
   const pageNumber = document.getElementById("page-number");
   if (pageNumber && data.info) {
     console.log(data);
@@ -139,7 +138,7 @@ prevBtn.addEventListener("click", () => {
 // 4. Call loadCharacters() on page load
 
 document.addEventListener("DOMContentLoaded", () => {
-  if (currentPage < 1 || currentPage > 42) {
+  if (currentPage < 1 || currentPage > 42 || isNaN(currentPage)) {
     currentPage = 1;
     window.location.href = `characters.html?page=${currentPage}`;
   }
@@ -150,21 +149,26 @@ document.addEventListener("DOMContentLoaded", () => {
     updateUI(charArray);
   });
   searchInpEl.addEventListener("input", () => {
-    const inputVal = searchInpEl.value.toLowerCase();
-    fetchCharactersinPage(currentPage)
-      .then((chars) => {
-        return chars.results.filter((char) => {
-          return char.name.toLowerCase().includes(inputVal);
-        });
-      })
-      .then((res) => {
-        if (!res) {
-        }
-        updateUI({ results: res });
-      });
+    const seachTimer = debounce(search, 800);
+    seachTimer();
   });
 });
 
+function search() {
+  const inputVal = searchInpEl.value.toLowerCase();
+  fetchCharactersinPage(currentPage)
+    .then((chars) => {
+      return chars.results.filter((char) => {
+        return char.name.toLowerCase().includes(inputVal);
+      });
+    })
+    .then((res) => {
+      if (!res) {
+      }
+      updateUI({ results: res });
+    });
+  return;
+}
 // link.addEventListener("click", () => {
 //   localStorage.setItem(`pgnum_${character.id}`, currentPgnum);
 // });

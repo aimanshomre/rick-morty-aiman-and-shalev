@@ -47,8 +47,7 @@ export function getEpisodesByPage(pageNum) {
       return response.json();
     })
     .then((data) => {
-      console.log(data.results);
-      return data.results;
+      return data;
     })
     .catch((error) => {
       console.warn("fet episodes error:", error);

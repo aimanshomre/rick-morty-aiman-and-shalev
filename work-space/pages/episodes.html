@@ -24,6 +24,21 @@
         <img src="../rick-morty-logo.png" alt="" />
         <span>Rick&Morty-A+S</span>
         <nav>
+          <div class="search-div">
+            <span popovertarget="episodesSeachInput" class="search-container">
+              <button class="search-btn" popovertarget="episodesSeachInput">
+                <img src="../pics/shearch icon.png" alt="search icon" />
+              </button>
+            </span>
+          </div>
+          <input
+            popover
+            autocomplete="off"
+            id="episodesSeachInput"
+            class="search-inp"
+            type="text"
+            placeholder="search here..."
+          />
           <div class="ham-menu">
             <span></span>
             <span></span>
@@ -44,6 +59,11 @@
           <p></p>
         </div>
         <div class="containers" id="episodes-grid"></div>
+        <div id="pageScroll" class="page-scroll">
+          <button id="episodePreviusPage">previus</button>
+          <div id="page-number"></div>
+          <button id="episodeNextPage">Next</button>
+        </div>
       </div>
       <footer>
         <div class="footer">
