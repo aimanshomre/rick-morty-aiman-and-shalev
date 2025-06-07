@@ -1,21 +1,4 @@
-function fetchLocationById(id) {
-  const url = `https://rickandmortyapi.com/api/location/${id}`;
-  return fetch(url).then((res) => {
-    if (!res.ok) throw new Error("Location not found");
-    return res.json();
-  });
-}
-
-function fetchResidentsByIds(ids) {
-  if (!ids.length) return Promise.resolve([]);
-  const url = `https://rickandmortyapi.com/api/character/${ids.join(",")}`;
-  return fetch(url)
-    .then((res) => {
-      if (!res.ok) throw new Error("Residents not found");
-      return res.json();
-    })
-    .then((data) => (Array.isArray(data) ? data : [data]));
-}
+import { fetchLocationById, fetchResidentsByIds } from "./modules/api.js";
 
 document.addEventListener("DOMContentLoaded", function () {
   const params = new URLSearchParams(window.location.search);

@@ -69,3 +69,41 @@ export function getLocationsByPage(pageNum) {
       console.warn("fet episodes error:", error);
     });
 }
+
+export function fetchEpisodeById(id) {
+  const url = `https://rickandmortyapi.com/api/episode/${id}`;
+  return fetch(url).then((res) => {
+    if (!res.ok) throw new Error("Episode not found");
+    return res.json();
+  });
+}
+
+export function fetchCharactersByIds(ids) {
+  if (!ids.length) return Promise.resolve([]);
+  const url = `https://rickandmortyapi.com/api/character/${ids.join(",")}`;
+  return fetch(url)
+    .then((res) => {
+      if (!res.ok) throw new Error("Characters not found");
+      return res.json();
+    })
+    .then((data) => (Array.isArray(data) ? data : [data]));
+}
+
+export function fetchLocationById(id) {
+  const url = `https://rickandmortyapi.com/api/location/${id}`;
+  return fetch(url).then((res) => {
+    if (!res.ok) throw new Error("Location not found");
+    return res.json();
+  });
+}
+
+export function fetchResidentsByIds(ids) {
+  if (!ids.length) return Promise.resolve([]);
+  const url = `https://rickandmortyapi.com/api/character/${ids.join(",")}`;
+  return fetch(url)
+    .then((res) => {
+      if (!res.ok) throw new Error("Residents not found");
+      return res.json();
+    })
+    .then((data) => (Array.isArray(data) ? data : [data]));
+}

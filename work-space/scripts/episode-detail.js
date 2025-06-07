@@ -1,21 +1,4 @@
-function fetchEpisodeById(id) {
-  const url = `https://rickandmortyapi.com/api/episode/${id}`;
-  return fetch(url).then((res) => {
-    if (!res.ok) throw new Error("Episode not found");
-    return res.json();
-  });
-}
-
-function fetchCharactersByIds(ids) {
-  if (!ids.length) return Promise.resolve([]);
-  const url = `https://rickandmortyapi.com/api/character/${ids.join(",")}`;
-  return fetch(url)
-    .then((res) => {
-      if (!res.ok) throw new Error("Characters not found");
-      return res.json();
-    })
-    .then((data) => (Array.isArray(data) ? data : [data]));
-}
+import { fetchEpisodeById, fetchCharactersByIds } from "./modules/api.js";
 
 function createEpisodeHeader(episode) {
   const header = document.createElement("div");
